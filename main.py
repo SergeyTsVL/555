@@ -1,9 +1,10 @@
-a = int(input('Переменная а = '))
-b = int(input('Переменная b = '))
-print(a, b)
-def test(a, b):
+
+def test():
+    a = int(input('Переменная а = '))
+    b = int(input('Переменная b = '))
+    print(a, b)
     return a, b
-pover = test(a=int(input('Переменная а = ')), b=int(input('Переменная b = ')))
+pover = test()
 print(pover)
 
 
@@ -15,3 +16,7 @@ def test2(i, j, z):
     return i, j, z
 pover2 = test2(i=10, j=20, z=30)
 print(pover2)
+
+import modul_1
+# print(modul_1.result)
+
