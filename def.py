@@ -1,15 +1,12 @@
-#def print_params():
-#    name = "Сергей"
-#    age = 40
-#   return name, age
-#result = print_params()
-#print("Функция", result)
+
+def print_params1():
+    name = "Сергей"
+    age = 40
+    print(f'Имя = {name}, возраст = {age} лет')
+print_params1()
+print_params1()
 
 
-name = "Сергей"
-age = 40
-def print_params(name, age):
-    return name, age
-result = print_params(name, age)
-print("Функция", result)
-print("Функция", result)
+# def func(param):
+#     print(param)
+#     print(param)
