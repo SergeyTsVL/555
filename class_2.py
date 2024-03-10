@@ -1,13 +1,12 @@
 class House:
     def __init__(self):
         self.numberOfFloors = 0
-    def setNewNumberOfFloors(floors):
-        for numberOfFloors in floors:
-            numberOfFloors += 1
-            print(House.setNewNumberOfFloors)
-            # return self.numberOfFloors
+        print('создан объект с параметром self.numberOfFloors = ', self.numberOfFloors)
+    def setNewNumberOfFloors(self, floors):
+        self.numberOfFloors = floors
+        print('я внутри метода setNewNumberOfFloors(floors)')
+        print('floors', floors)
+        print('self.numberOfFloors', self.numberOfFloors)
 dom = House()
-print(dom.setNewNumberOfFloors)
-# dom.setNewNumberOfFloors(floors=5)
-# print(House.setNewNumberOfFloors.floors)
-# House.setNewNumberOfFloors(floors=5)
+
+dom.setNewNumberOfFloors(5)
