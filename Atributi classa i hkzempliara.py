@@ -8,21 +8,12 @@ number_of_floors = []
 while len(number_of_floors) < 5:   # вместо 40 поставил 5. Но всеравно выводит 10 вместо 5
     new_Buiding = Buiding()
     number_of_floors.append(new_Buiding)
-    print(Buiding())
+    # print(Buiding())
 print(Buiding.total)
 
 
 
 
-
-#
-# f = Buiding()
-# print(f)
-
-        # while total < 40:
-        #     total += 1
-        #     print(total)
-        #     print(sum(total))
 
 
 
