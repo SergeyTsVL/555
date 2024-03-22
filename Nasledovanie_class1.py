@@ -1,19 +1,18 @@
 class Car:
-    price = 1000000
-    pover = 105
-    def __init__(self, price, pover):
-        self.price = price
+
+    def __init__(self, pover):
+        self.price = 1000000
         self.pover = pover
 
     def horse_powers(self):
-        return self.price
+        return self.pover
 
 class Nissan(Car):
 
-    def __init__(self, price, pover):
-        # Car.__init__(self, price)
-        self.price = price
-        self.pover = pover
+    def __init__(self, pover):
+        super().__init__(pover)
+        self.price = 15000000
+
 
     def horse_powers(self):
         print('Цена авто:', self.pover + 100, self.price + 200000)
@@ -23,13 +22,13 @@ class Kia(Car):
         print('Цена авто:', self.pover + 200, self.price + 400000)
 
 
-a = Car()
+a = Car(100)
 a.horse_powers()
 
-s = Nissan()
+s = Nissan(200)
 s.horse_powers()
 
-d = Kia()
+d = Kia(300)
 d.horse_powers()
 
 
