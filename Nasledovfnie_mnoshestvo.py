@@ -17,7 +17,7 @@ class Nissan(Car, Vehicle):
         self.vehicle_type = 'yes'
 
     def horse_powers(self):
-        print('Цена авто:', self.pover + 100, self.price + 100000)
+        return self.pover and self.price 
 
 a = Nissan()
 print(a.vehicle_type, a.price)
