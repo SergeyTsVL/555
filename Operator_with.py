@@ -6,4 +6,5 @@ with open(text_name, mode='rb') as text:
 
 pprint(text_content)
 
-# text.close()
+print(text.close())
+
