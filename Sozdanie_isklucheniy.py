@@ -1,6 +1,6 @@
-class Exception:
-    list = [int(1), int(0), 'fv', None]
-    print(list)
+# class Exception:
+#     list = [int(1), int(0), 'fv', None]
+#     print(list)
 
 class InvalidDataException(Exception):
     def rr():
