@@ -8,17 +8,16 @@ def hyperbole(a):
             i += 1
             print(a)
         else:
-            print('Принт приближаемся к нулю')
+            try:
+                warnings.warn('Это важное предупреждение, значение меньше 0,001', UserWarning)
+            except UserWarning as e:
+                print(f'Предупреждение перехвачено как {e}')
             a = a / i
             i += 1
             print(a)
         list.append(a)
-    print(list)
+    # print(list)
 
 s = hyperbole(1)
 print(s)
 
-try:
-    (list[-1] - 0.01) ** 0.5 != True
-except:
-    print('UserWarning')
