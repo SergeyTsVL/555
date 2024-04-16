@@ -17,6 +17,8 @@ def hyperbole(a):
             print(a)
         list.append(a)
     # print(list)
+# warnings.simplefilter('error', UserWarning)
+# warnings.simplefilter('ignore', UserWarning)
 
 s = hyperbole(1)
 print(s)
