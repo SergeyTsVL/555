@@ -1,9 +1,3 @@
-def sum_three(*args):
-    total = 0
-    for namber in args:
-        total += namber
-    return total
-
 def is_prime(func):
     def wrapper(*args, **kwargs):
         k = 0
@@ -17,7 +11,12 @@ def is_prime(func):
             print("Составное")
         return result
     return wrapper
-
+@is_prime
+def sum_three(*args):
+    total = 0
+    for namber in args:
+        total += namber
+    return total
 
 result = sum_three(2, 3, 6)
 print(result)
