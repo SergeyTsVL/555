@@ -6,7 +6,7 @@ salary_recipients = ['Иванов Иван Иванович', 'Петров П�
 salary = ['15000', '15000', '15000', '45500', '13200', '38000', '55000', '55000']
 
 
-def is_prime(func):
+def decorator_function(func):
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         dictionary = {}
@@ -20,12 +20,12 @@ def is_prime(func):
             warnings.warn('В списке получателей ЗП повторяются работники', UserWarning)
         return dictionary
     return wrapper
-@is_prime
-def sum_three(*args):
+@decorator_function
+def combining_lists(*args):
     list_of_salary_recipients = list(zip(*args))
     return list_of_salary_recipients
 
-result = sum_three(salary_recipients, salary)
+result = combining_lists(salary_recipients, salary)
 # print(result)
 for name, age in result.items():
-    print(f'{name:<35} {age}')
+    print(f'{name:<35}:{age}')
