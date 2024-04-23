@@ -18,6 +18,6 @@ def is_prime(func):
         return result
     return wrapper
 
-ff = is_prime(sum_three)
-result = ff(2, 3, 6)
+
+result = sum_three(2, 3, 6)
 print(result)
