@@ -1,25 +1,26 @@
+import threading
 import time
 import random
-from threading import Thread
 
-# from collections import defauldict
-
-english_letters = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j')
-numbers_10 = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')
-
-
-def creating_stream(args):
-    for i in range(len(args)):
-        ff = random.choice(args)
+def number():
+    numbers_10 = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')
+    for i in range(10):
+        ff = random.choice(numbers_10)
+        time.sleep(1)
         print(ff)
-        time.sleep(0.1)
-    print("fglkjlkjj")
 
+def letters():
+    english_letters = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j')
+    for i in range(10):
+        pp = random.choice(english_letters)
+        time.sleep(1)
+        print(pp)
 
-# creating_stream(args=english_letters)
+thread_1 = threading.Thread(target=number)
+thread_2 = threading.Thread(target=letters)
 
+thread_1.start()
+thread_2.start()
 
-thread = Thread(args=english_letters)
-thread.start()
-creating_stream(args=numbers_10)
-thread.join()
+thread_1.join()
+thread_2.join()
