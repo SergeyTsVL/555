@@ -2,7 +2,6 @@ from collections import defaultdict
 import time
 from threading import Thread
 
-
 class Knight(Thread):
     def __init__(self, name, skills, enemies, *args, **kwargs):
         super(Knight, self).__init__(*args, **kwargs)
@@ -16,10 +15,9 @@ class Knight(Thread):
         for skill in range(0, self.enemies, self.skills):
             self.enemies -= self.skills
             time.sleep(0.1)
-            print(f'{self.name}, сражается {int(skill / self.skills)} день(дня)'
-                  f'для победы потребуется {int(self.enemies / self.skills)} день(дня), осталось {self.enemies} воинов.')
+            print(f'{self.name}, сражается {int(skill / self.skills) + 1} день(дня)..., осталось {self.enemies} воинов.')
         if self.enemies <= 0:
-            print(f'{self.name} одержал победу спустя {int(skill / self.skills)} дней')
+            print(f'{self.name} одержал победу спустя {int(skill / self.skills) + 1} дней')
 
 
 knight1 = Knight("Sir Lancelot", 10, 100) # Низкий уровень умения
