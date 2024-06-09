@@ -1,56 +1,88 @@
-import requests as rq
-import logging
+import csv
 
-logger_200 = logging.getLogger('success_responses')
-logger_200.setLevel(logging.INFO)
-main_fh_200 = logging.FileHandler("success_responses.log", 'w', 'utf-8')
-formatter_200 = logging.Formatter('%(message)s')
-main_fh_200.setFormatter(formatter_200)
-logger_200.addHandler(main_fh_200)
+def write_holiday_cities(first_letter):
 
-logger_not_200 = logging.getLogger('blocked_responses')
-logger_not_200.setLevel(logging.WARNING)
-main_fh_not_200 = logging.FileHandler("blocked_responses.log", 'w', 'utf-8')
-formatter_not_200 = logging.Formatter('%(message)s')
-main_fh_not_200.setFormatter(formatter_not_200)
-logger_not_200.addHandler(main_fh_not_200)
+    with open("travel-notes.csv", mode="r", encoding='utf-8') as file:
 
-logger_no_response = logging.getLogger('bad_responses')
-logger_no_response.setLevel(logging.ERROR)
-main_fh_no_response = logging.FileHandler("bad_responses.log", 'w', 'utf-8')
-formatter_no_response = logging.Formatter('%(message)s')
-main_fh_no_response.setFormatter(formatter_no_response)
-logger_no_response.addHandler(main_fh_no_response)
+        data_list = []
+        data_list1 = []
+        listing_list = []    # для городов людей, имена которых начинаются на 'L' которые посетили
+        listing_list1 = []   # для городов людей, имена которых начинаются на 'L' которые хотят посетить
+        listing_list2 = []   # для городов людей, имена которых начинаются на 'L' в которых еще небыли
 
-
-sites = ['https://instagram.com', 'https://wikipedia.org', 'https://yahoo.com',
-         'https://yandex.ru', 'https://whatsapp.com', 'https://twitter.com', 'https://amazon.com', 'https://tiktok.com',
-         'https://www.ozon.ru']
-
-
-def print_primes():
-    for site in sites:
-        try:
-            response_200 = rq.get(site, timeout=1)
-            if response_200.status_code == 200:
-                logger_200.info(f'INFO: {site}, response - {response_200.status_code}')
-        except BaseException:
-            print('logger_200')
-
-        try:
-            response_not_200 = rq.get(site, timeout=1)
-            if response_not_200.status_code != 200:
-                logger_not_200.warning(f'WARNING: {site}, response - {response_not_200.status_code}')
-        except BaseException:
-            print('logger_not_200')
-
-        try:
-            response_no_response = rq.get(site, timeout=1)
-            if response_no_response.status_code == None:
-                logger_no_response.error(f'ERROR: {site}, {response_no_response.status_code}')
-        except BaseException:
-            print(logger_no_response.error(f'ERROR: {site}, NO CONNECTION'))
+        for row in csv.reader(file):
+            data_list.append(row)
+            # print(row[0:1])
+            if first_letter in ''.join(row[0:1]):
+# цикл для городов людей, имена которых начинаются на 'L' которые посетили
+                for i in row[1:2]:
+                    j = i.split(';')
+                    listing_list.append(j)
+# цикл для городов людей, имена которых начинаются на 'L' которые хотят посетить
+                for i in row[2:]:
+                    j = i.split(';')
+                    listing_list1.append(j)
+# цикл для городов людей, имена которых начинаются на 'L' в которых еще небыли
+            data_list1.append(row)
+            for i in row[1:2]:
+                j = i.split(';')
+                listing_list2.append(j)
 
 
-if __name__ == '__main__':
-    print_primes()
+# городов людей, имена которых начинаются на 'L' которые посетили
+        plenty = set(sum(listing_list, []))
+        list_set = list(plenty)
+        list_set.sort()
+        list_set[0] = 'Посетeли: ' + list_set[0]                     # для вывода в holiday.csv согласно дом.заданию
+
+# для городов людей, имена которых начинаются на 'L' которые хотят посетить
+        plenty1 = set(sum(listing_list1, []))
+        list_set1 = list(plenty1)
+        list_set1.sort()
+
+        # list_set1[0] = 'Xотят посетить:' + list_set1[0]
+
+# для городов людей, имена которых начинаются на 'L' в которых еще небыли
+        plenty2 = set(sum(listing_list2, []))
+        list_set2 = list(plenty2)
+        list_set2.sort()
+
+        list_set2_1 = []
+        for element in list_set1:
+            if element not in list_set2:
+                list_set2_1.append(element)
+
+        list_set1[0] = 'Xотят посетить: ' + list_set1[0]            # для вывода в holiday.csv согласно дом.заданию
+
+# для городa который посетят
+        visit_city = list_set2_1[0].split()
+
+        list_set2_1[0] = 'Никогда не были в: ' + list_set2_1[0]      # для вывода в holiday.csv согласно дом.заданию
+        visit_city[0] = 'Следующим городом будет: ' + visit_city[0]  # для вывода в holiday.csv согласно дом.заданию
+
+        a = list(list_set)
+        b = list(list_set1)
+        c = list(list_set2_1)
+        d = list(visit_city)
+
+
+
+
+        print(', '.join(list_set))
+        print(', '.join(list_set1))
+        print(', '.join(list_set2_1))
+        print(''.join(visit_city))
+
+
+
+        with open("holiday.csv", mode="w", encoding='utf-8', newline='') as out_csv:
+            writer = csv.DictWriter(out_csv, fieldnames=a)
+            writer.writeheader()
+            writer = csv.DictWriter(out_csv, fieldnames=b)
+            writer.writeheader()
+            writer = csv.DictWriter(out_csv, fieldnames=c)
+            writer.writeheader()
+            writer = csv.DictWriter(out_csv, fieldnames=d)
+            writer.writeheader()
+
+write_holiday_cities('L')
