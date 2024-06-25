@@ -1,7 +1,7 @@
 import time
 import cv2
 
-source = cv2.VideoCapture('../videos/video_BLUR_EYE.mp4')
+source = cv2.VideoCapture('video_BLUR_EYE.mp4')
 
 while True:
 
