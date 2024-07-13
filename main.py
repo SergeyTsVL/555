@@ -1,88 +1,46 @@
-import csv
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+from datetime import datetime
 
-def write_holiday_cities(first_letter):
+def get_cmc_data():
+    url = "https://coinmarketcap.com/"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    table = soup.find('table', {'class': 'cmc-table'})
+    rows = table.find_all('tr')
+    data = []
+    total_market_cap = 0
 
-    with open("travel-notes.csv", mode="r", encoding='utf-8') as file:
+    for row in rows[1:]:
+        cols = row.find_all('td')
+        mc = cols[3].text.strip().replace('$', '').replace(',', '')
+        mc = float(mc)
+        total_market_cap += mc
 
-        data_list = []
-        data_list1 = []
-        listing_list = []    # для городов людей, имена которых начинаются на 'L' которые посетили
-        listing_list1 = []   # для городов людей, имена которых начинаются на 'L' которые хотят посетить
-        listing_list2 = []   # для городов людей, имена которых начинаются на 'L' в которых еще небыли
+    for row in rows[1:]:
+        cols = row.find_all('td')
+        name = cols[2].text.strip()
+        mc = cols[3].text.strip().replace('$', '').replace(',', '')
+        try:
+            mc = float(mc)
+        except ValueError:
+            mc = 0
+        mp = round((mc / total_market_cap) * 100, 2) if total_market_cap != 0 else 0
 
-        for row in csv.reader(file):
-            data_list.append(row)
-            # print(row[0:1])
-            if first_letter in ''.join(row[0:1]):
-# цикл для городов людей, имена которых начинаются на 'L' которые посетили
-                for i in row[1:2]:
-                    j = i.split(';')
-                    listing_list.append(j)
-# цикл для городов людей, имена которых начинаются на 'L' которые хотят посетить
-                for i in row[2:]:
-                    j = i.split(';')
-                    listing_list1.append(j)
-# цикл для городов людей, имена которых начинаются на 'L' в которых еще небыли
-            data_list1.append(row)
-            for i in row[1:2]:
-                j = i.split(';')
-                listing_list2.append(j)
+        data.append({'Name': name, 'Market Cap': mc, 'Market Percentage': mp})
 
-
-# городов людей, имена которых начинаются на 'L' которые посетили
-        plenty = set(sum(listing_list, []))
-        list_set = list(plenty)
-        list_set.sort()
-        list_set[0] = 'Посетeли: ' + list_set[0]                     # для вывода в holiday.csv согласно дом.заданию
-
-# для городов людей, имена которых начинаются на 'L' которые хотят посетить
-        plenty1 = set(sum(listing_list1, []))
-        list_set1 = list(plenty1)
-        list_set1.sort()
-
-        # list_set1[0] = 'Xотят посетить:' + list_set1[0]
-
-# для городов людей, имена которых начинаются на 'L' в которых еще небыли
-        plenty2 = set(sum(listing_list2, []))
-        list_set2 = list(plenty2)
-        list_set2.sort()
-
-        list_set2_1 = []
-        for element in list_set1:
-            if element not in list_set2:
-                list_set2_1.append(element)
-
-        list_set1[0] = 'Xотят посетить: ' + list_set1[0]            # для вывода в holiday.csv согласно дом.заданию
-
-# для городa который посетят
-        visit_city = list_set2_1[0].split()
-
-        list_set2_1[0] = 'Никогда не были в: ' + list_set2_1[0]      # для вывода в holiday.csv согласно дом.заданию
-        visit_city[0] = 'Следующим городом будет: ' + visit_city[0]  # для вывода в holiday.csv согласно дом.заданию
-
-        a = list(list_set)
-        b = list(list_set1)
-        c = list(list_set2_1)
-        d = list(visit_city)
+    return data
 
 
+def write_cmc_top(data):
+    now = datetime.now().strftime("%H.%M_%d.%m.%Y")
+    filename = f"{now}.csv"
+
+    df = pd.DataFrame(data)
+    df.to_csv(filename, sep=' ', index=False)
 
 
-        print(', '.join(list_set))
-        print(', '.join(list_set1))
-        print(', '.join(list_set2_1))
-        print(''.join(visit_city))
-
-
-
-        with open("holiday.csv", mode="w", encoding='utf-8', newline='') as out_csv:
-            writer = csv.DictWriter(out_csv, fieldnames=a)
-            writer.writeheader()
-            writer = csv.DictWriter(out_csv, fieldnames=b)
-            writer.writeheader()
-            writer = csv.DictWriter(out_csv, fieldnames=c)
-            writer.writeheader()
-            writer = csv.DictWriter(out_csv, fieldnames=d)
-            writer.writeheader()
-
-write_holiday_cities('L')
+if __name__ == "__main__":
+    data = get_cmc_data()
+    write_cmc_top(data)
